@@ -69,10 +69,14 @@ process{
             Unregister-ScheduledTask -TaskName $currentTaskName
             
         } else {
+            ##-- Create task cleanup action
+            $Action = ($Action), (New-ScheduledTaskAction -Execute "powershell.exe" -Argument "Start-Sleep -Seconds 300; Unregister-ScheduledTask -TaskName $TaskName")
+            ##-- Create Task
             Write-Verbose -Message "Creating Task $TaskName."
             $task = Register-ScheduledTask -TaskName $TaskName -Action $Action -Description "A Task to run once after a reboot." -Trigger $Trigger -Principal $principal -TaskPath $TaskPath
             $Task | Set-ScheduledTask
         }
+
     } catch {
         #-- Catch the error
         Write-Error $_.Exception.Message
