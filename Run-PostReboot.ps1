@@ -72,7 +72,7 @@ process{
             
         }
         ##-- Create task cleanup action
-        $Action = ($Action), (New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-Command {Start-Sleep -Seconds 300; Unregister-ScheduledTask -TaskName `"$TaskName`" -TaskPath `"\$TaskPath\`"}")
+        $Action = ($Action), (New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-Command `"Start-Sleep -Seconds 300; Unregister-ScheduledTask -TaskName '$TaskName' -TaskPath '\$TaskPath\'`"")
         ##-- Create Task
         Write-Verbose -Message "Creating Task $TaskName."
         $task = Register-ScheduledTask -TaskName $TaskName -Action $Action -Description "A Task to run once after a reboot." -Trigger $Trigger -Principal $principal -TaskPath $TaskPath
