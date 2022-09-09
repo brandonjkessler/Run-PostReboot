@@ -65,6 +65,8 @@ process{
             $currentTaskPath = $currentSchedTask.TaskPath
             $currentTaskName = $currentSchedTask.TaskName
             $currentSchedTask | Export-ScheduledTask | Register-ScheduledTask -TaskName "$($currentTaskName)_Old" -TaskPath $currentTaskPath
+            #-- Disable the backed up scheduled task
+            Disable-ScheduledTask -TaskName "$($currentTaskName)_Old" -TaskPath $currentTaskPath
             Write-Verbose -Message "Unregistering $currentTaskName task."
             Unregister-ScheduledTask -TaskName $currentTaskName
             
